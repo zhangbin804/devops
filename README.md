@@ -36,6 +36,15 @@ pip3 install -r requirements.txt
 ```
 CREATE DATABASE devops DEFAULT CHARACTER SET utf8;
 grant all on devops.* to 'devops'@'127.0.0.1' identified by '123456';
+
 ```
+
+### 登录账号密码
+```
+账号：admin
+密码：123456
+```
+
+
 
 
