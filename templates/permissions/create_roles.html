@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+     {% block head %}
+     {% endblock %}
+</head>
+
+{% block  right %}
+<div>
+    <form method="post" action="/permissions/create/roles/">
+    <div class="form-group">
+    <label>角色组</label>
+        <p></p>
+    {{ form.role }}{{ form.role.errors.0 }}
+    </div>
+        <p></p>
+    <input style="position: relative;left: 85%;top: 50px;" type="submit" class="btn btn-primary" value="确定">
+    </form>
+</div>
+{% endblock %}
+</html>
+

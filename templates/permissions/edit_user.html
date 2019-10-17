@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+     {% block head %}
+      {% endblock %}
+</head>
+{##}
+{% block  right %}
+    {% load permissions_templatetags %}
+    <form method="post" action="/permissions/edit/user/{{ user_obj.id }}/">
+    <div style="height: 120px;"></div>
+    <div style="position:relative;left: 35%;">
+    <h4>账号:  <span style="font-weight: bold;">{{ user_obj.name }}</span></h4>
+    <input style="display: none;" type="text" name="user_id" value="{{ user_obj.id }}">
+    <h4>姓名:&nbsp;&nbsp; <span style="display: inline-block;"><input type="text" class="form-control" name="username" value="{{ user_obj.username }}" minlength="1"></span></h4>
+        <h4>邮箱: &nbsp;&nbsp;<span style="display: inline-block;"><input type="email" class="form-control" name="email" value="{{ user_obj.email }}" minlength="6"></span></h4>
+        <h4>密码: &nbsp;&nbsp;<span style="display: inline-block;"><input type="password" class="form-control"  name="password" value=""></span></h4>
+     <h4>权限:&nbsp;&nbsp;
+     <label><select  name="role" class="form-control">
+         {% for i in role_list %}
+             {% if  i.id  == role %}
+                <option value="{{ i.id }}" selected = "selected" >{{ i.title }}</option>
+             {% else %}
+                 <option value="{{ i.id }}" >{{ i.title }}</option>
+             {% endif %}
+         {% endfor %}
+     </select>
+         </label>
+     </h4>
+        <h4>账号启用:&nbsp;</h4>
+    <label ><input class="mui-switch" name="disable" type="checkbox" checked></label>
+
+    </div>
+    <input type="submit" value="保存" class="btn btn-primary" style="position: relative;left: 80%;top: 100%;">
+    </form>
+
+{% endblock %}
+</html>
+

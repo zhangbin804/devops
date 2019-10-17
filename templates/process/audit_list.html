@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+     {% block head %}
+
+      {% endblock %}
+
+</head>
+
+{% block  right %}
+    <table class="table table-bordered">
+    <thead>
+    <tr>
+        <td>名称</td>
+        <td>申请人</td>
+        <td>申请时间</td>
+        <td>详情</td>
+    </tr>
+    </thead>
+    {% for i in audit_all %}
+        <tr>
+        <td>{{ i.name }}</td>
+        <td>{{ i.create_user }}</td>
+        <td>{{ i.create_time }}</td>
+        <td><a href="/process/audit/info/?audit={{ i.id }}"  style="color: blue;">审核</a></td>
+        </tr>
+    {% endfor %}
+</table>
+{% endblock %}
+</html>
+

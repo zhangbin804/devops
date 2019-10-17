@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+
+{% block  right %}
+<div class="title_right">
+
+    <label>
+        <form method="get" action="/project/list/">
+                <a  href="/project/create/" class="btn btn-success">添加项目</a>
+                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                  <div class="input-group">
+                    <input type="text" class="form-control search_process" name="search" placeholder="Search">
+                    <span class="input-group-btn">
+                      <button id="search_process_button" class="btn btn-default" type="submit">搜索</button>
+                    </span>
+                  </div>
+                </div>
+        </form>
+    </label>
+
+        <div class="table-responsive">
+            <table class="table table-striped jambo_table bulk_action">
+                <thead>
+                <tr class="headings">
+                        <th class="column-title">项目名</th>
+                        <th class="column-title">描述</th>
+                        <th class="column-title">服务器组</th>
+                        <th class="column-title">当前tag</th>
+                        <th class="column-title">最近变更</th>
+                        <th class="column-title">连接状态</th>
+                        <th class="column-title">操作</th>
+                    </tr>
+                </thead>
+
+
+<!-- Small modal -->
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <div  class="modal-content" style="height: 300px;">
+        <div  style="position: relative;left: 30%;top: 40%;">
+            <input id="delete_project_button" type="button" class="btn  btn-danger" value="确定" onclick="DeleteProject();" ><span style="font-weight: bold;" id="project_content">
+        </span>
+            </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade bs-example-modal-sm1" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <form method="post" action="/project/release/">
+  <div class="modal-dialog modal-sm" role="document">
+    <div  class="modal-content" style="height: 300px;">
+        <h3>项目更新</h3>
+        <div  style="position: relative;left: 10%;top: 20%;">
+            <input style="display: none;" type="text" id="update_project_id" name="id" value="">
+        <input type="radio" name="update_project_way" value="0" checked>当前分支最新<br>
+        <input type="radio" name="update_project_way" value="1">指定tag <br>
+            <div id="update_project_tag" class="server_auth">
+                <select id="update_project_tag_select"  name="tag">
+                    <option value="">空</option>
+                </select>
+
+            </div>
+
+        </div>
+        <div  style="position: relative;left: 70%;top: 40%;">
+            <input  type="submit" class="btn  btn-danger"  onclick="OnFalse(this);"   value="确定" ><span style="font-weight: bold;" id="update_project_content">
+
+        </span>
+            </div>
+    </div>
+  </div>
+        </form>
+</div>
+
+
+    <div class="modal fade bs-example-modal-sm2" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <form method="post" action="/project/rollback/">
+  <div class="modal-dialog modal-sm" role="document">
+    <div  class="modal-content" style="height: 300px;">
+        <h3>项目回滚</h3>
+        <div  style="position: relative;left: 10%;top: 20%;">
+            <input style="display: none;" type="text" id="rollbac_project_id" name="id" value="">
+        <input type="radio" name="rollbac_project_way" value="0" checked>上个版本<br>
+{#        <input type="radio" name="rollbac_project_way" value="1">指定tag <br>#}
+        <input type="radio" name="rollbac_project_way" value="2">指定commit id <br>
+{#            <div id="rollback_project_tag" class="server_auth">#}
+{#                <select id="rollback_project_tag_select"  name="tag">#}
+{#                    <option value="">空</option>#}
+{#                </select>#}
+{#            </div>#}
+            <div id="rollback_project_commit"  class="server_auth">
+                <input type="text" name="rollback_project_commit_input">
+
+            </div>
+        </div>
+        <div  style="position: relative;left: 70%;top: 40%;">
+            <input type="submit" class="btn  btn-danger" onclick="OnFalse(this);"    value="确定" ><span style="font-weight: bold;" id="update_project_content">
+
+        </span>
+            </div>
+    </div>
+  </div>
+          </form>
+</div>
+{% load project_templatetags %}
+
+             {% for project in project_list %}
+                 <tbody>
+                 <tr class="even pointer">
+                   <td style="font-size: 16px;font-family: bold;">{{ project.title }}</td>
+                   <td style="font-size: 16px;font-family: bold;">{{ project.describe }}</td>
+                   <td style="font-size: 16px;font-family: bold;">{{ project.server_group.title }}</td>
+                     <td style="font-size: 16px;font-family: bold;">{% get_tag project.log.id %}</td>
+                     <td style="font-size: 16px;font-family: bold;">{% get_new_time  project.log.id %}</td>
+                     <td>{% connection_status project.connection_auth  %}</td>
+                   <td><a  href="/project/read/?id={{ project.id }}" class="btn btn-info">查看</a>
+                       <a href="/project/connection/test/?id={{ project.id }}" onclick="OnFalse(this);" class="btn btn-info">连接测试</a>
+                       <a href="/project/edit/?id={{ project.id }}" class="btn btn-primary">编辑</a>
+                       <button class="btn btn-primary" onclick="SendProjectId('{{ project.id }}');" data-toggle="modal" data-target=".bs-example-modal-sm1" >发布</button>
+                       <button  class="btn btn-warning" onclick="SendRollbackProjectId('{{ project.id }}');" data-toggle="modal" data-target=".bs-example-modal-sm2">回滚</button>
+                       <button type="button" onclick="DeleteProjectContent({{ project.id }},'{{ project.title }}');" class="btn  btn-danger" data-toggle="modal" data-target=".bs-example-modal-sm"  >删除</button>
+                   </td>
+{#                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Small modal</button>#}
+{#                     <a href="/process/delete/?del={{ process.id }}" class="btn btn-danger">删除</a>#}
+{#                   <td><a href="/process/delete/{{ process.id }}/" class="btn btn-primary">删除</a></td>#}
+                 </tr>
+                 </tbody>
+             {% endfor %}
+         </table>
+        </div>
+
+            </div>
+<div class="pager">
+{% load mytemplateags %}
+        <label class="left">
+          <div>每页显示</div>
+            <form method="get" action="/change/page/" id="change_page_form">
+        <select id="process_page" name="change_page" onchange="ChangePageForm();" class="form-control form-control input-sm">
+            <option value="5" {% isOption 5 request.session.total_num %}>5</option>
+            <option value="10" {% isOption 10 request.session.total_num %}>10</option>
+            <option value="20" {% isOption 20 request.session.total_num %}>20</option>
+            <option value="50" {% isOption 50 request.session.total_num %}>50</option>
+            <option value="100" {% isOption 100 request.session.total_num %}>100</option>
+        </select>
+                </form>
+        </label>
+
+<nav aria-label="...">
+    <ul class="pagination">
+        <li class="disabled"></li>
+        {{ pager }}
+    </ul>
+
+</nav>
+</div>
+{% endblock %}
+</html>

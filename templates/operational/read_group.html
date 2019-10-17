@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+     {% block head %}
+
+      {% endblock %}
+</head>
+{% block  right %}
+    <div class="form-group">
+    <label>服务器组</label>
+        <p></p>
+    <input disabled="true" type="text" class="form-control" value="{{ group_obj.title }}" name="group">
+        <p style="color: red;">{{ form.group.errors.0 }}</p>
+    </div>
+        <p></p>
+
+    <label>选择服务器</label>
+ <table>
+     <thead>
+     <tr style="font-size: 20px;" >
+         <td style="padding-left: 50px;">待选服务器</td>
+         <td style="padding-left: 50px;">操作</td>
+         <td>已选服务器</td>
+     </tr>
+     </thead>
+	<tr>
+		<td style="padding-left: 50px;">
+		  <select disabled="true" multiple class="sel" id="sel_left" style="width:200px;height: 300px;font-size: 18px;">
+			{% for i in all_server %}
+                {% if i.id not in group_server_id_list %}
+                    <option value="{{ i.id }}">{{ i.ip }}</option>
+                {% endif %}
+                  {% endfor %}
+
+		  </select>
+		</td>
+		<td style="padding: 50px;">
+			<p><button disabled="true" class="btn btn-primary" >>></button></p><br>
+			<p><button disabled="true" class="btn btn-primary" >&nbsp;>&nbsp; </button></p><br>
+			<p><button disabled="true" class="btn btn-primary" >&nbsp;<&nbsp; </button></p><br>
+			<p><button disabled="true" class="btn btn-primary" ><<</button></p><br>
+
+		</td>
+		<td>
+			 <select disabled="true"  multiple  name="option_server" class="sel" id="sel_right" style="width:200px;height: 300px;;font-size: 18px;">
+			 {% for i in group_server %}
+                 <option value="{{ i.id }}">{{ i.ip }}</option>
+                 {% endfor %}
+			 </select>
+		</td>
+	</tr>
+</table>
+
+{% endblock %}
+</html>

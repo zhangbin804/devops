@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+     {% block head %}
+
+      {% endblock %}
+
+</head>
+
+{% block  right %}
+     <div style="float: right;">
+     <a class="btn btn-primary"  href="/permissions/create/user/">添加账号</a>
+    <a class="btn btn-primary"  href="/permissions/create/roles/">添加角色</a>
+
+    </div></br>
+
+    <div class="lift_col" role="main">
+
+
+          <div class="lift_col">
+            <div class="page-title">
+              <div class="title_left">
+                <h3>权限管理</h3>
+              </div>
+
+              <div class="title_right">
+
+              </div>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="row">
+              <div class="col-md-6 col-sm-6 col-xs-12 table">
+                <div class="x_panel">
+                  <div class="x_title">
+
+                    <ul class="nav navbar-right panel_toolbox">
+
+                      <li class="dropdown">
+                        <ul class="dropdown-menu" role="menu">
+                          <li><a href="#">Settings 1</a>
+                          </li>
+                          <li><a href="#">Settings 2</a>
+                          </li>
+</ul>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+
+                   <table class="table">
+                      <thead>
+                        <tr>
+                          <th>角色组</th>
+                          <th>用户列表</th>
+                          <th>操作</th>
+
+                        </tr>
+                      </thead>
+                   {% load permissions_templatetags %}
+                      <tbody style="font-size: 15px;">
+                         {% for roles,user_list in permission_dict.items %}
+                             <tr style="font-weight: 500;"><td>{{ roles }}</td><td>{{ user_list }}</td><td><a href="/permissions/edit/{% role_id roles %}/" style="color: blue;" >编辑</a>&nbsp;&nbsp;<a  href="#" data-toggle="modal" data-target="#myModal" style="color: blue;" onclick=" DeleteRolesContent('{% role_id roles %}','{{ roles }}');">删除</a></td></tr>
+{% endfor %}
+
+                      </tbody>
+                    </table>
+
+                  </div>
+                </div>
+              </div>
+
+              </div>
+            </div>
+          </div>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">删除角色组</h4>
+      </div>
+      <div class="modal-body" id="delete_roles">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button type="button" class="btn btn-primary" id="delete_roles_button">确定删除</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+</html>
+

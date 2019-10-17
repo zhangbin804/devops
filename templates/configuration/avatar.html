@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+     {% block head %}
+        <style>
+        .preview_box img {
+            width: 150px;
+            height: 150px;
+        }
+        </style>
+      {% endblock %}
+
+</head>
+
+{% block  right %}
+    <form enctype="multipart/form-data" name="form_avatar" method="post" action="/configuration/edit/avatar/">
+{#    <input id="img_input" type="file" name="avatar" accept="image/*"/>#}
+        {{ form.avatar }}{{ form.errors.avatar.0 }}
+    <label for="img_input"></label>
+    <div class="preview_box"></div><br>
+    <input  type="submit" class="btn btn-primary" value="保存">
+
+    </form><br>
+    <h3 style="color: red;">{{ error_msg }}</h3>
+
+{% endblock %}
+</html>

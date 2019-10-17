@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+     {% block head %}
+      {% endblock %}
+</head>
+
+{% block  right %}
+                  <div class="x_title">
+                    <div class="clearfix"></div>
+                  </div>
+                    <br />
+                    <form class="form-horizontal form-label-left" method="post" action="/process/save/">
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">项目流程名*</label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+{#                            <span name="id"></span>#}
+{#                          <input type="text" class="form-control" name="process_name" placeholder="">#}
+{#                            <input type="text" name="id" class="form-control" value="{{ process_obj.id }}" style="display: none;" >#}
+                            <h2>{{ process_obj.name }}</h2>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">描述<span class="required">*</span>
+                        </label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                          <p  style="position: relative;top: 8px;"> {{ process_obj.describe }}</p>
+                        </div>
+                      </div>
+{#                      <div class="form-group">#}
+{#                        <label class="control-label col-md-3 col-sm-3 col-xs-12">图片/附件</label>#}
+{#                        <div class="col-md-9 col-sm-9 col-xs-12">#}
+{#                          <input type="file"  name="c"  value="">#}
+{#                        </div>#}
+{#                      </div>#}
+                        <div id="head_reviewer"  name="username">
+                        </div>
+
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">审核流程</label>
+                    </br>
+                    </br>
+                     {% for i in user_list_obj %}
+
+
+                         <div class="form-group">
+                        <div  class=" col-md-9 col-sm-9 col-xs-12" id="option_{{ i.id }}" >
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">{{ i.name }}</label>
+                          <img src="/{{ i.head_img }}" height="100" width="100">
+{#                          <input type="button" value="删除" onclick="DeleteReviewer(this.name);"  flag_n="{{ i.name }}"  name="delete_reviewer"  style="display: inline;">#}
+                          <input style="display: none;" type="checkbox" name="{{ i.id }}" checked="checked">
+                            </br>
+                            </br>
+                     </div>
+               </div>
+                    {% endfor %}
+
+
+
+                    <div style="float: right;">
+                            <!-- Button trigger modal -->
+
+{#                        <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" data-target="#myModal">#}
+{#                        <div class="modal-dialog modal-lg" role="document">#}
+{#                        <div class="modal-content" style="width: 800px;height: 500px;">#}
+
+                    </div>
+
+                    </div>
+                        </div>
+                    </form>
+                  </div>
+
+{% endblock %}
+</html>

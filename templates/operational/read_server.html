@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+
+{% block  right %}
+    {% load operational_templatetags %}
+    <h4 style="color: red;">{{ error_msg }}</h4>
+                      <label for="fullname">服务器名 * :</label>
+                    <input type="text" disabled="true" name="server_name" value="{{ server_obj.server_name }}" class="form-control" required>
+                    <p style="color: red;">{{ form.server_name.errors.0 }}</p>
+                      <label for="email">IP地址 * :</label>
+                    <input disabled="true" type="text" name="ip" value="{{ server_obj.ip }}" class="form-control" required>
+                    <p style="color: red;">{{ form.ip.errors.0 }}</p>
+                      <label>认证*:</label>
+                      <p>
+                        已ssh-key认证:
+                        <input disabled="true" type="radio" class="flat auth_server_radio" name="ssh_auth" id="genderM" value="auth_success" checked/> &nbsp;密码认证:
+                        <input disabled="true" type="radio" class="flat auth_server_radio server_ssh_auth" name="ssh_auth" id="genderF" value="auth" {% is_radio_checked server_obj.user %} />
+                      </p>
+                        <div id="server_auth_id" class="{% class_server_auth server_obj.user %}" >
+                            <label>ssh账号*:</label>
+                            <input readonly="readonly" type="text" name="user" value="{% get_ssh_user_value  server_obj.user %}" class="form-control" >
+                            <p style="color: red;">{{ form.user.errors.0 }}</p>
+                            <label>ssh密码*:</label>
+                            <input readonly="readonly" type="password" name="password" value="{% get_ssh_password_value server_obj.password %}"  class="form-control" >
+                            <p style="color: red;">{{ form.password.errors.0 }}</p>
+                            <label>ssh端口*:</label>
+                            <input readonly="readonly" type="text" name="ssh_port" value="{%  get_ssh_user_value server_obj.port %}" class="form-control" >
+                            <p style="color: red;">{{ form.ssh_port.errors.0 }}</p>
+
+                        </div>
+
+                                            <label>服务器组:</label>
+                          <table>
+     <thead disabled="true">
+     <tr style="font-size: 20px;" >
+         <td style="padding-left: 50px;">待选服务器组</td>
+         <td style="padding-left: 50px;">操作</td>
+         <td>已选服务器组</td>
+     </tr>
+     </thead>
+	<tr>
+		<td style="padding-left: 50px;">
+		  <select disabled="true" multiple class="sel" id="sel_left" style="width:200px;height: 300px;font-size: 18px;">
+			{% for group in server_group_list%}
+                {% if group.id not in group_id %}
+                    <option value="{{ group.id }}">{{ group.title }}</option>
+                {% endif %}
+            {% endfor %}
+
+		  </select>
+		</td>
+		<td style="padding: 50px;">
+			<p><button disabled="true" class="btn btn-primary" >>></button></p><br>
+			<p><button disabled="true" class="btn btn-primary" >&nbsp;>&nbsp; </button></p><br>
+			<p><button disabled="true" class="btn btn-primary" >&nbsp;<&nbsp; </button></p><br>
+			<p><button disabled="true" class="btn btn-primary" ><<</button></p><br>
+
+		</td>
+		<td>
+			 <select  disabled="true" multiple  name="option_server" class="sel" id="sel_right" style="width:200px;height: 300px;;font-size: 18px;">
+			 {% for i in group %}
+                 <option value="{{ i.id }}">{{ i.title }}</option>
+                 {% endfor %}
+			 </select>
+		</td>
+	</tr>
+</table>
+    <br/>
+
+{% endblock %}
+</html>

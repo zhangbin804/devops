@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+{% block  right %}
+
+              <div>
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>编辑项目</h2>
+                      <h4 style="color: red;">{{ error_msg }}</h4>
+                    <div class="clearfix"></div>
+                  </div>
+                {% load project_templatetags %}
+                  <div class="x_content">
+
+                    <br />
+                    <form class="form-horizontal form-label-left" action="/project/edit/" method="post">
+
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">项目名*</label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                            <input type="text" class="form-control" name="title" value="{{ project_obj.title }}" >
+                            <p style="color: red;">{{ form.title.errors.0 }}</p>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">描述<span class="required"></span>
+                        </label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                          <textarea class="form-control" rows="3" name="describe"  >{{ project_obj.describe }}</textarea>
+                            <p style="color: red;">{{ form.describe.errors.0 }}</p>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">git地址</label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                          <input type="text" name="git_url" class="form-control" value="{{ project_obj.git_url }}">
+                            <p style="color: red;">{{ form.git_url.errors.0 }}</p>
+                        </div>
+                      </div>
+                        <div class="form-group">
+                        <label class="col-md-3 col-sm-3 col-xs-12 control-label">认证方式
+                          <br>
+                          <small class="text-navy"></small>
+                        </label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                        <div >
+                            <label>
+                              <input type="radio"  name="git_auth_way"  value="0" {% get_git_auth_way project_obj.git_auth_way 0 %}  > 账号密码认证
+                            </label>
+                          </div>
+                          <div >
+                            <label>
+                              <input type="radio" name="git_auth_way" value="1" {% get_git_auth_way project_obj.git_auth_way 1 %}} > 已ssh-key认证
+                            </label>
+                          </div>
+                        </div>
+                        </div>
+
+                        <div class="git_user_passwor {% show_default_auth project_obj.git_auth_way 0 %}" id="git_user_passwor">
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">git账号</label>
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                    <input type="text" name="git_user" class="form-control" value="{{ project_obj.git_user }}" >
+                                    <p style="color: red;">{{ form.git_user.errors.0 }}</p>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">git密码</label>
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                    <input type="password" name="git_password" value="{{ project_obj.git_password }}" class="form-control" >
+                                    <p style="color: red;">{{ form.git_passowrd.errors.0 }}</p>
+                                </div>
+                            </div>
+                        </div>
+{#                        <div class="git_ssh_key {% show_default_auth project_obj.git_auth_way 1 %}" id="git_ssh_key">#}
+{#                            <div class="form-group">#}
+{#                                <label class="control-label col-md-3 col-sm-3 col-xs-12">ssh-key私钥</label>#}
+{#                                <div class="col-md-9 col-sm-9 col-xs-12">#}
+{#                                    <textarea name="git_ssh_key" class="form-control" rows="3"   >{{ project_obj.git_ssh_key }}</textarea>#}
+{#                                    <p style="color: red;">{{ form.git_ssh_key.errors.0 }}</p>#}
+{#                                </div>#}
+{#                            </div>#}
+{##}
+{#                        </div>#}
+
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">分支名</label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                          <input type="text" name="git_branch"  value="{{ project_obj.git_branch }}"  class="form-control col-md-10"/>
+                            <p style="color: red;">{{ form.git_branch.errors.0 }}</p>
+                        </div>
+                      </div>
+
+                    <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">项目所在路径*</label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                <input type="text" class="form-control" name="deploy_dir" value="{{ project_obj.deploy_dir }}">
+                                 <p style="color: red;">{{ form.deploy_dir.errors.0 }}</p>
+                        <p></p>
+                            </div>
+                        </div>
+
+
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">项目部署服务器组</label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                          <select class="form-control" name="server_group">
+                            <option></option>
+                              {% for group in server_group_all %}
+                                    {%  if group.id == project_obj.server_group.id %}
+                                    <option value="{{ group.id }}" selected>{{ group.title }}</option>
+                                    {% else %}
+                                    <option value="{{ group.id }}" >{{ group.title }}</option>
+                                    {% endif %}
+                              {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+
+                        <h4 class="control-label col-md-3 col-sm-3 col-xs-12">任务配置项:</h4>
+                        <br><br>
+                        <p></p>
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">排除文件</label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                            <textarea class="form-control" name="exclude_file" rows="3" >{{ project_obj.exclude_file }}</textarea>
+                            <p style="color: red;">{{ form.exclude_file.errors.0 }}</p>
+                        </div>
+                      </div>
+
+                        <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">通知方式</label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                          <select id="project_online_notice_select" name="online_notice" class="form-control">
+                              {% if project_obj.online_notice == 'email' %}
+                                <option value="email" selected>邮件</option>
+                                <option value="dingding">钉钉</option>
+                               {% elif  project_obj.online_notice == 'dingding' %}
+                                  <option value="email" >邮件</option>
+                                <option value="dingding" selected>钉钉</option>
+                              {% endif %}
+                          </select>
+                        </div>
+                      </div>
+
+                        <div  id="email_input" class="form-group {% show_default_auth project_obj.online_notice 'email' %}">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">邮件通知人</label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                            <select id="email_notice_select" name="email_notice" class="form-control">
+                                <option value=""></option>
+                                {% for role in role_all %}
+                                    {% if role.id == project_obj.email_notice.id %}
+                                    <option value="{{ role.id }}" selected>{{ role.title }}</option>
+                                    {% else %}
+                                    <option value="{{ role.id }}">{{ role.title }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+
+                        <div  id="dingding_input" class="form-group {% show_default_auth project_obj.online_notice 'dingding' %}">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">钉钉webhook地址</label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                            <input type="text" name="dingding_notice"  value="{{ project_obj.dingding_notice }}" class="form-control col-md-10"/>
+                            <p style="color: red;">{{ form.dingding_notice.errors.0 }}</p>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                           <input style="display: none;" name="project_id" value="{{ project_obj.id }}">
+                          <button type="reset" class="btn btn-primary">重置</button>
+                          <button type="submit" class="btn btn-success">提交</button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+{% endblock %}
+</html>

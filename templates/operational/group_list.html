@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+
+{% block  right %}
+<div class="title_right">
+{% load operational_templatetags %}
+    <label>
+        <form method="get" action="/operational/list/group/">
+                <a href="/operational/list/server/" class="btn btn-success">服务器列表</a>
+                <a href="/operational/create/group/" class="btn btn-success">添加组</a>
+                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                  <div class="input-group">
+                    <input type="text" class="form-control search_process" name="search" placeholder="Search">
+                    <span class="input-group-btn">
+                      <button id="search_process_button" class="btn btn-default" type="submit">搜索</button>
+                    </span>
+                  </div>
+                </div>
+        </form>
+    </label>
+
+        <div class="table-responsive">
+            <table class="table table-striped jambo_table bulk_action">
+                <thead>
+                <tr class="headings">
+                        <th class="column-title">服务器组</th>
+                        <th class="column-title">服务器列表</th>
+                        <th class="column-title">操作</th>
+                    </tr>
+                </thead>
+
+
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <div  class="modal-content" style="height: 300px;">
+        <div  style="position: relative;left: 30%;top: 40%;">
+            <input id="delete_server_group_button" type="button" class="btn  btn-danger" value="确定" onclick="DeleteServerGroup();" ><span style="font-weight: bold;" id="server_group_content"></span>
+            </div>
+    </div>
+  </div>
+</div>
+
+
+             {% for group in group_list %}
+                 <tbody>
+                 <tr class="even pointer">
+                   <td style="font-size: 18px;">{{ group.title }}</td>
+                   <td style="font-size: 18px;">
+                       {% for k,v in server_group_dict.items %}
+                        {% if k == group.id %}
+                            {% get_group_server v %}
+                         {% endif %}
+                        {% endfor %}
+                   </td>
+                   <td><a href="/operational/read/group/{{ group.id }}/" class="btn btn-primary">查看</a>
+                       <a href="/operational/edit/group/{{ group.id }}/" class="btn btn-primary">编辑</a>
+                       <button type="button" onclick="DeleteServerGroupContent({{ group.id }},'{{ group.title }}');" class="btn  btn-danger" data-toggle="modal" data-target=".bs-example-modal-sm"  >删除</button>
+                   </td>
+{#                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Small modal</button>#}
+{#                     <a href="/process/delete/?del={{ process.id }}" class="btn btn-danger">删除</a>#}
+{#                   <td><a href="/process/delete/{{ process.id }}/" class="btn btn-primary">删除</a></td>#}
+                 </tr>
+                 </tbody>
+             {% endfor %}
+         </table>
+        </div>
+
+            </div>
+<div class="pager">
+{% load mytemplateags %}
+        <label class="left">
+          <div>每页显示</div>
+            <form method="get" action="/operational/change/page/" id="change_page_form">
+        <select id="process_page" name="change_page" onchange="ChangePageForm();" class="form-control form-control input-sm">
+            <option value="5" {% isOption 5 request.session.total_num %}>5</option>
+            <option value="10" {% isOption 10 request.session.total_num %}>10</option>
+            <option value="20" {% isOption 20 request.session.total_num %}>20</option>
+            <option value="50" {% isOption 50 request.session.total_num %}>50</option>
+            <option value="100" {% isOption 100 request.session.total_num %}>100</option>
+        </select>
+                </form>
+        </label>
+
+<nav aria-label="...">
+    <ul class="pagination">
+        <li class="disabled"></li>
+        {{ pager }}
+    </ul>
+
+</nav>
+</div>
+{% endblock %}
+
+</html>

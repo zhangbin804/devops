@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+     {% block head %}
+
+      {% endblock %}
+</head>
+
+{% block  right %}
+                  <div class="x_title">
+                    <div class="clearfix"></div>
+                  </div>
+                    <br />
+                    <form class="form-horizontal form-label-left" method="post" action="/process/save/">
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">项目流程名*</label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+{#                            <span name="id"></span>#}
+{#                          <input type="text" class="form-control" name="process_name" placeholder="">#}
+                            <input type="text" name="id" class="form-control" value="{{ process_obj.id }}" style="display: none;" >
+                            <h2>{{ process_obj.name }}</h2>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">描述<span class="required">*</span>
+                        </label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                          <textarea name="describe" class="form-control" rows="3" placeholder="">{{ process_obj.describe }}</textarea>
+                        </div>
+                      </div>
+{#                      <div class="form-group">#}
+{#                        <label class="control-label col-md-3 col-sm-3 col-xs-12">图片/附件</label>#}
+{#                        <div class="col-md-9 col-sm-9 col-xs-12">#}
+{#                          <input type="file"  name="c"  value="">#}
+{#                        </div>#}
+{#                      </div>#}
+                        <div id="head_reviewer"  name="username">
+                        </div>
+                     {% for i in user_list_obj %}
+
+
+                         <div class="form-group">
+                        <div  class=" col-md-9 col-sm-9 col-xs-12" id="option_{{ i.id }}" >
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">{{ i.name }}</label>
+                          <img src="/{{ i.head_img }}" height="100" width="100">
+                          <input type="button" value="删除" onclick="DeleteReviewer(this.name);"  flag_n="{{ i.name }}"  name="delete_reviewer"  style="display: inline;">
+                          <input style="display: none;" type="checkbox" name="{{ i.id }}" checked="checked">
+                            <p></p>
+                     </div>
+               </div>
+                    {% endfor %}
+                      <div class="form-group" id="placeholde_reviewer">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">添加审核人</label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                            <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+  +
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">添加审核人</h4>
+      </div>
+      <div class="modal-body reviewer_list" >
+          {% for i in user_list %}
+              <img onclick="AddReviewer('{{ i.head_img }}','{{ i.name }}','{{ i.id }}');" id="{{ i.id }}" src="{{ i.head_img }}"  height="80" width="80">
+              <span id="{{ i.name }}_{{ i.id }}">{{ i.name }}</span>
+          {% endfor %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+      </div>
+    </div>
+  </div>
+</div>
+{#                          <input type="button"  id="add_process_user"  data-toggle="modal" data-target=".bs-example-modal-lg" value="+"/>#}
+                        </div>
+                      </div>
+                    <div style="float: right;">
+                            <!-- Button trigger modal -->
+
+{#                        <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" data-target="#myModal">#}
+{#                        <div class="modal-dialog modal-lg" role="document">#}
+{#                        <div class="modal-content" style="width: 800px;height: 500px;">#}
+
+                    </div>
+
+
+                    </div>
+                        </div>
+                      <div class="ln_solid"></div>
+                      <div class="form-group">
+                        <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                          <button type="submit" class="btn btn-primary">保存</button>
+                        </div>
+                      </div>
+
+                    </form>
+                  </div>
+
+
+{% endblock %}
+</html>
+

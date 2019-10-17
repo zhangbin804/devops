@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+     {% block head %}
+      {% endblock %}
+</head>
+
+{% block  right %}
+    <form method="post" action="/process/create/" enctype="multipart/form-data">
+    <label for="heard">流程表选择 *</label>
+                          <select name="select_process_id" id="heard" class="form-control" required>
+                            {% for i in process_all_obj %}
+                              <option value="{{ i.id }}">{{ i.name }}</option>
+                              {% endfor %}
+                          </select>
+    <p></p>
+    <label for="heard">流程名 *</label>
+    {{ form.create_name }}{{ form.errors.create_name.0 }}
+    <p></p>
+    <label for="heard">描述</label>
+            <textarea name="describe" class="form-control" rows="3" placeholder=""></textarea>
+    <p></p>
+     <label for="heard">附件</label>
+{#    <form enctype="multipart/form-data" method="post" action="/process/create/">#}
+    <input type="file" name="attachment"><span style="color: red;">{{ error_msg }}</span>
+{#    </form>#}
+    <p></p>
+    <input type="submit" class="btn  btn-primary" value="创建">
+    </form>
+{% endblock %}
+</html>
+

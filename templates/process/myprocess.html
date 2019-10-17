@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+     {% block head %}
+      {% endblock %}
+</head>
+
+{% block  right %}
+<div class="tab-con">
+    <div class="get_process_history_content">
+    <label class="left">
+        <form id="option_history_form" action="/process/myprocess/" method="get">
+        <select name="option_process_select"  id="dispaly_option_process_select" class="form-control form-control input-sm" >
+            <option value="all" {{ all }}>所有的记录</option>
+            <option value="audit" {{ audit }}  >审核中的记录</option>
+            <option value="success" {{ success }}>通过的记录</option>
+            <option value="failed" {{ failed }}  >拒绝的记录</option>
+{#            <option dispaly_page_process="">50</option>#}
+{#            <option dispaly_page="100">100</option>#}
+        </select>
+            </form>
+        </label>
+{#        <div style="height: 20px;"></div><br><br>#}
+{#        <div></div>#}
+    <table class="table">
+    {% load mytemplateags %}
+{#    {% load mytemplateags %}#}
+    <thead>
+    <tr>
+            <td>id</td>
+            <td>名称</td>
+            <td>创建时间</td>
+            <td>状态</td>
+            <td>详情</td>
+    </tr>
+    </thead>
+        {% for i in process_list %}
+
+            <tr>
+            <td>{{ i.id }}</td>
+            <td>{{ i.describe }}</td>
+            <td>{{ i.create_time }}</td>
+            <td>{% getStatus  i.status  %}</td>
+                <td><a href="/process/describe/?id={{ i.id }}" style="color: blue;">详情</a></td>
+            </tr>
+        {% endfor %}
+</table>
+
+    </div>
+
+</div>
+
+<nav aria-label="...">
+    <ul class="pagination">
+        <li class="disabled"></li>
+        {{ pager }}
+    </ul>
+
+</nav>
+{% endblock %}
+</html>
+

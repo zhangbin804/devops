@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+
+{% block  right %}
+
+    <form  method="post" id="create_server_form" action="/operational/create/server/">
+    <h4 style="color: red;">{{ error_msg }}</h4>
+                      <label for="fullname">服务器名 * :</label>
+                    {{ form.server_name }}
+                    <p style="color: red;">{{ form.server_name.errors.0 }}</p>
+                      <label for="email">IP地址 * :</label>
+                    {{ form.ip }}
+                    <p style="color: red;">{{ form.ip.errors.0 }}</p>
+                      <label>认证*:</label>
+                      <p>
+                        已ssh-key认证:
+                        <input type="radio" class="flat auth_server_radio" name="ssh_auth" id="genderM" value="auth_success" checked="" required /> &nbsp;密码认证:
+                        <input type="radio" class="flat auth_server_radio server_ssh_auth" name="ssh_auth" id="genderF" value="auth" />
+                      </p>
+                        <div id="server_auth_id" class="server_auth" >
+                            <label>ssh账号*:</label>
+                            {{ form.user }}
+                            <p style="color: red;">{{ form.user.errors.0 }}</p>
+                            <label>ssh密码*:</label>
+                            {{ form.password }}
+                            <p style="color: red;">{{ form.password.errors.0 }}</p>
+                            <label>ssh端口*:</label>
+                            {{ form.ssh_port }}
+                            <p style="color: red;">{{ form.ssh_port.errors.0 }}</p>
+
+                        </div>
+
+                      <label>服务器组:</label>
+                            <table>
+     <thead>
+     <tr style="font-size: 20px;" >
+         <td style="padding-left: 50px;">待选服务器</td>
+         <td style="padding-left: 50px;">操作</td>
+         <td>已选服务器</td>
+     </tr>
+     </thead>
+	<tr>
+		<td style="padding-left: 50px;">
+		  <select multiple class="sel" id="sel_left" style="width:200px;height: 300px;font-size: 18px;">
+			{% for group in server_group_list%}
+
+                <option value="{{ group.id }}">{{ group.title }}</option>
+
+            {% endfor %}
+
+		  </select>
+		</td>
+		<td style="padding: 50px;">
+			<p><button class="btn btn-primary" id="btn_1">>></button></p><br>
+			<p><button class="btn btn-primary" id="btn_2">&nbsp;>&nbsp; </button></p><br>
+			<p><button class="btn btn-primary" id="btn_3">&nbsp;<&nbsp; </button></p><br>
+			<p><button class="btn btn-primary" id="btn_4"><<</button></p><br>
+
+		</td>
+		<td>
+			 <select  multiple  name="option_server" class="sel" id="sel_right" style="width:200px;height: 300px;;font-size: 18px;">
+			 {% for i in group_server %}
+                 <option value="{{ i.id }}">{{ i.ip }}</option>
+                 {% endfor %}
+			 </select>
+		</td>
+	</tr>
+</table>
+                          <br/>
+
+                          <input type="button" id="create_server_butten" class="btn btn-primary" value="保存">
+
+                    </form>
+                    <!-- end form for validations -->
+
+
+
+
+{% endblock %}
+</html>
