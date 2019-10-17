@@ -55,10 +55,7 @@ class LoginUserForm(forms.Form):
     password = forms.CharField(label='密 码', min_length=6,max_length=64,error_messages={'required': '密码不能为空','invalid': u'请输入有效邮箱'},
                                validators=[password_auth,],
                                widget=forms.PasswordInput(attrs={'class': 'form-control','placeholder':'密 码','required':'', 'min_length': '密码长度不能小于6'}))
-
-    # password =  forms.ChoiceField(widget = forms.Select(),
-    #                  choices = ([('1','1'), ('2','2'),('3','3'), ]), initial='3', required = True,)
-    # password = forms.ChoiceField(widget=forms.RadioSelect,choices=(('1', '男',), ('2', '女',)),initial='1')
+    
 class AddUserForm(forms.Form):
     username = forms.CharField(label='账 号',max_length=32, error_messages={'required': '账号不能为空'},
                                validators=[user_auth,],
