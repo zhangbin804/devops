@@ -74,9 +74,6 @@ class AddUserForm(forms.Form):
     email = forms.CharField(label='邮 箱',min_length=6, max_length=64,error_messages={'required': '邮箱不能为空', 'min_length': '密长度不能小于6', 'max_length': '长度不能大于64', },
                             widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': '原密码', 'required': ''}))
 
-    # gender = forms.ChoiceField(label='性 别',widget=forms.RadioSelect,choices=(('1', '男',), ('2', '女',)),initial='1')
-    #
-    #
 
 class ChangePasswordForm(forms.Form):
     old_password = forms.CharField(label='旧密码',min_length=6, max_length=32,
