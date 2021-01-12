@@ -39,6 +39,11 @@ grant all on devops.* to 'devops'@'127.0.0.1' identified by '123456';
 
 ```
 
+### 3、启动
+```
+ python3 manage.py runserver 0.0.0.0:8000
+```
+
 ### 登录账号密码
 ```
 账号：admin
